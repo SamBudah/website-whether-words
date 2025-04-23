@@ -1,7 +1,6 @@
 
 import React from 'react';
 import WeatherIcon from './WeatherIcon';
-import { Card, CardContent } from "@/components/ui/card";
 
 interface ForecastItem {
   date: string;
@@ -21,20 +20,29 @@ const WeatherForecast: React.FC<WeatherForecastProps> = ({ forecast, unit }) => 
     return `${Math.round(temperature)}°`;
   };
 
+  if (!forecast || forecast.length === 0) {
+    // Placeholder for empty
+    return (
+      <div className="flex justify-between w-full items-center min-h-[48px] px-2 text-gray-400">
+        <span>Day 1</span>
+        <span>Day 2</span>
+        <span>Day 3</span>
+      </div>
+    );
+  }
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       {forecast.map((item, index) => (
-        <Card key={index} className="overflow-hidden">
-          <CardContent className="flex flex-col items-center justify-center p-4">
-            <p className="font-medium text-center">{item.date}</p>
-            <div className="my-4">
-              <WeatherIcon iconCode={item.icon} size={48} className="text-primary mx-auto" />
-            </div>
-            <p className="text-center">
-              {formatTemp(item.temp_min)}-{formatTemp(item.temp_max)}
-            </p>
-          </CardContent>
-        </Card>
+        <div key={index} className="flex flex-col items-center justify-center p-4">
+          <p className="font-medium mb-2 text-gray-700">{item.date}</p>
+          <div className="my-2">
+            <WeatherIcon iconCode={item.icon} size={40} className="text-blue-600 mx-auto" />
+          </div>
+          <p className="mt-2 text-blue-800 font-bold text-xl">
+            {formatTemp(item.temp_min)} - {formatTemp(item.temp_max)}
+          </p>
+        </div>
       ))}
     </div>
   );

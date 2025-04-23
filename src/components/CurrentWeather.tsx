@@ -1,7 +1,6 @@
 
 import React from 'react';
 import WeatherIcon from './WeatherIcon';
-import { Card, CardContent } from "@/components/ui/card";
 
 interface CurrentWeatherProps {
   data: {
@@ -19,23 +18,28 @@ interface CurrentWeatherProps {
 const CurrentWeather: React.FC<CurrentWeatherProps> = ({ data, unit }) => {
   const formatTemp = (temp: number): string => {
     const temperature = unit === 'fahrenheit' ? (temp * 9/5) + 32 : temp;
-    return `${Math.round(temperature)}°${unit === 'celsius' ? 'C' : 'F'}`;
+    return `${Math.round(temperature)}°`;
   };
 
   return (
-    <Card className="overflow-hidden">
-      <CardContent className="flex flex-col items-center justify-center p-6 space-y-2">
-        <div className="flex flex-col items-center">
-          <WeatherIcon iconCode={data.icon} size={80} className="text-primary" />
-          <h2 className="text-4xl font-bold mt-2">{formatTemp(data.temp)}</h2>
-          <p className="text-xl font-medium capitalize">{data.description}</p>
+    <div className="flex flex-row items-center justify-between min-h-[128px]">
+      {/* Left */}
+      <div className="flex flex-col gap-2">
+        <div className="text-3xl font-extrabold text-gray-800">{data.city}, {data.country}</div>
+        <div className="text-base text-gray-500">{data.date}</div>
+        <div className="text-md text-gray-600 mt-2 capitalize">{data.description}</div>
+      </div>
+      {/* Right */}
+      <div className="flex flex-col items-end gap-2">
+        <WeatherIcon iconCode={data.icon} size={48} className="text-blue-600" />
+        <div className="flex items-center text-gray-700 font-bold text-3xl">
+          <span className="mr-1">{formatTemp(data.temp)}</span>
         </div>
-        <div className="text-center mt-4">
-          <p className="text-lg">{data.date}</p>
-          <p className="text-lg font-medium">{data.city}, {data.country}</p>
+        <div className="text-right text-gray-500 text-xs mt-1">
+          Feels like: {formatTemp(data.feels_like)}
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 };
 
